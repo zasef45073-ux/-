@@ -1,0 +1,70 @@
+networks:
+  deepface-net:
+    driver: bridge
+
+services:
+  # ── Qdrant 벡터 DB (칵테일 RAG 검색) ────────────────────────────────────
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: cocktailbar-qdrant
+    ports:
+      - "6333:6333"   # REST API  → http://192.168.10.88:6333
+      - "6334:6334"   # gRPC
+    volumes:
+      - ./qdrant_data:/qdrant/storage
+    networks:
+      - deepface-net
+    restart: unless-stopped
+
+  # ── DeepFace API (웹캠 + TensorFlow GPU) ──────────────────────────────────
+  deepface-api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: cocktailbar-backend
+    ports:
+      - "8000:8000"
+    devices:
+      - /dev/video0:/dev/video0   # 웹캠 마운트
+    group_add:
+      - video
+    environment:
+      - TF_CPP_MIN_LOG_LEVEL=2
+      - PYTHONUNBUFFERED=1
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    networks:
+      - deepface-net
+    depends_on:
+      - qdrant
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+
+  # ── Streamlit 관리자 대시보드 ──────────────────────────────────────────────
+  dashboard:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: cocktailbar-frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - deepface-net
+    depends_on:
+      deepface-api:
+        condition: service_healthy
+    restart: unless-stopped

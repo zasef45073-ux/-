@@ -1,0 +1,21 @@
+# AI 및 대화 파이프라인 (신버전 문법 고정)
+openai>=1.0.0
+
+# 로컬 벡터 DB (API 변경으로 인한 크래시 방지)
+chromadb==0.4.24
+
+# 환경 변수 및 웹 통신
+python-dotenv
+requests
+firebase-admin
+
+# 오디오 캡처 및 음성 처리
+pyaudio
+sounddevice
+
+# 딥러닝 연산 및 리샘플링 (Numpy 2.0 충돌 방어선)
+numpy>=1.24.0,<2.0.0
+scipy
+
+# 상시 대기 웨이크업 엔진
+openwakeword

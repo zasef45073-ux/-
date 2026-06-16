@@ -1,0 +1,5 @@
+# cocktail_order_interfaces/srv/TriggerCleanup.srv
+
+int32 cup_id         # 질문: 비전이 발견한 "치워야 할 컵의 ID"
+---
+bool success         # 답변: 대화 노드가 손님에게 물어보고 받아낸 "치우기 승인 여부 (True/False)"

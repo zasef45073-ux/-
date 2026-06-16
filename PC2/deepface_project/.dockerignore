@@ -1,0 +1,22 @@
+# 가상환경
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+
+# 사용하지 않는 스크립트
+main_0519.py
+webcam_app.py
+README.md
+
+# 로그
+*.log

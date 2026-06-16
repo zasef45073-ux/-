@@ -1,0 +1,12 @@
+# Goal (요청)
+bool start_chat             # 대화 시작 트리거
+---
+# Result (최종 결과)
+bool is_success             # 주문 최종 성공 여부
+string final_menu           # 최종 결정된 칵테일 이름
+string recipe_code          # 칵테일 레시피 코드 (하드웨어 제어용)
+---
+# Feedback (실시간 피드백)
+int32 current_turn          # 현재 진행 중인 대화 턴 수
+string user_text            # 유저가 방금 한 말 (STT 결과 - UI 자막용)
+string bot_message          # 로봇이 방금 한 대답 (TTS 결과 - UI 자막용)
