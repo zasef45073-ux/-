@@ -1,4 +1,4 @@
-# D3 Workspace Overview
+# Workspace Overview
 
 이 저장소는 하나의 단일 애플리케이션이 아니라, `PC1`과 `PC2`에서 각각 독립적으로 운용되는 두 개의 시스템 묶음으로 구성되어 있습니다.
 
